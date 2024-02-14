@@ -1,10 +1,9 @@
 import React from 'react'
 
-import { ExampleComponent } from 'secretstache-library'
-import 'secretstache-library/dist/index.css'
+import SvgImageComponent from 'secretstache-library'
 
 const App = () => {
-  return <ExampleComponent text="Create React Library Example 😄" />
+  return <SvgImageComponent />
 }
 
 export default App
