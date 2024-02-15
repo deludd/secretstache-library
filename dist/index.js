@@ -1,100 +1,9 @@
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var React = require('react');
-var React__default = _interopDefault(React);
+var React = _interopDefault(require('react'));
 var blockEditor = require('@wordpress/block-editor');
 var components = require('@wordpress/components');
 var icons = require('@wordpress/icons');
-
-// A type of promise-like that resolves synchronously and supports only one observer
-
-const _iteratorSymbol = /*#__PURE__*/ typeof Symbol !== "undefined" ? (Symbol.iterator || (Symbol.iterator = Symbol("Symbol.iterator"))) : "@@iterator";
-
-const _asyncIteratorSymbol = /*#__PURE__*/ typeof Symbol !== "undefined" ? (Symbol.asyncIterator || (Symbol.asyncIterator = Symbol("Symbol.asyncIterator"))) : "@@asyncIterator";
-
-// Asynchronously call a function and send errors to recovery continuation
-function _catch(body, recover) {
-	try {
-		var result = body();
-	} catch(e) {
-		return recover(e);
-	}
-	if (result && result.then) {
-		return result.then(void 0, recover);
-	}
-	return result;
-}
-
-var cleanSvgString = function cleanSvgString(svgString) {
-  if (svgString.startsWith('<?xml')) {
-    var endOfXml = svgString.indexOf('?>');
-    if (endOfXml !== -1) {
-      svgString = svgString.substring(endOfXml + 2);
-    }
-  }
-  svgString = svgString.trim();
-  return svgString;
-};
-
-var useImageHandler = function useImageHandler(defaultValues, onImageChange) {
-  var defaultImageId = defaultValues.defaultImageId,
-    defaultImageUrl = defaultValues.defaultImageUrl,
-    defaultImageAlt = defaultValues.defaultImageAlt;
-  var _useState = React.useState({
-      imageId: defaultImageId,
-      imageUrl: defaultImageUrl,
-      imageAlt: defaultImageAlt,
-      svgCode: ''
-    }),
-    imageData = _useState[0],
-    setImageData = _useState[1];
-  var onSelectImage = function onSelectImage(media) {
-    try {
-      var _temp3 = function _temp3() {
-        setImageData(newImageData);
-        onImageChange(newImageData);
-      };
-      var newImageData = {
-        imageId: media.id,
-        imageUrl: media.url,
-        imageAlt: media.alt,
-        svgCode: ''
-      };
-      var _temp2 = function () {
-        if (media.mime === 'image/svg+xml') {
-          var _temp = _catch(function () {
-            return Promise.resolve(fetch(media.url)).then(function (response) {
-              return Promise.resolve(response.text()).then(function (svgString) {
-                newImageData.svgCode = cleanSvgString(svgString);
-              });
-            });
-          }, function (error) {
-            console.error('Error fetching SVG:', error);
-          });
-          if (_temp && _temp.then) return _temp.then(function () {});
-        }
-      }();
-      return Promise.resolve(_temp2 && _temp2.then ? _temp2.then(_temp3) : _temp3(_temp2));
-    } catch (e) {
-      return Promise.reject(e);
-    }
-  };
-  var onRemoveImage = function onRemoveImage() {
-    var newImageData = {
-      imageId: null,
-      imageUrl: '',
-      imageAlt: '',
-      svgCode: ''
-    };
-    setImageData(newImageData);
-    onImageChange(newImageData);
-  };
-  return {
-    imageData: imageData,
-    onSelectImage: onSelectImage,
-    onRemoveImage: onRemoveImage
-  };
-};
 
 function _extends() {
   _extends = Object.assign ? Object.assign.bind() : function (target) {
@@ -1229,19 +1138,19 @@ var BCImageRenderer = function BCImageRenderer(_ref) {
     onImageClick = _ref.onImageClick,
     onRemoveClick = _ref.onRemoveClick,
     onSelectClick = _ref.onSelectClick;
-  return imageId && imageUrl ? /*#__PURE__*/React__default.createElement(Fragment, null, /*#__PURE__*/React__default.createElement("div", {
+  return imageId && imageUrl ? /*#__PURE__*/React.createElement(Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "bc-selected-image-wrapper"
-  }, /*#__PURE__*/React__default.createElement("img", {
+  }, /*#__PURE__*/React.createElement("img", {
     src: imageUrl,
     className: "bc-selected-image",
     alt: imageAlt,
     onClick: onImageClick
-  })), /*#__PURE__*/React__default.createElement(components.Button, {
+  })), /*#__PURE__*/React.createElement(components.Button, {
     className: "bc-remove-btn",
     onClick: onRemoveClick,
     isSecondary: true,
     isDestructive: true
-  }, "Remove Image")) : /*#__PURE__*/React__default.createElement(components.Button, {
+  }, "Remove Image")) : /*#__PURE__*/React.createElement(components.Button, {
     variant: "secondary",
     onClick: onSelectClick
   }, "Select Image");
@@ -1263,14 +1172,14 @@ var BCImagePicker = function BCImagePicker(_ref) {
     onSelect = _ref.onSelect,
     onRemove = _ref.onRemove,
     other = _objectWithoutPropertiesLoose(_ref, _excluded);
-  return /*#__PURE__*/React__default.createElement(blockEditor.MediaUploadCheck, null, /*#__PURE__*/React__default.createElement(blockEditor.MediaUpload, _extends({
+  return /*#__PURE__*/React.createElement(blockEditor.MediaUploadCheck, null, /*#__PURE__*/React.createElement(blockEditor.MediaUpload, _extends({
     onSelect: onSelect,
     allowedTypes: ['image', 'image/svg+xml'],
     accept: "image/*",
     value: imageId,
     render: function render(_ref2) {
       var open = _ref2.open;
-      return /*#__PURE__*/React__default.createElement(BCImageRenderer, {
+      return /*#__PURE__*/React.createElement(BCImageRenderer, {
         imageId: imageId,
         imageUrl: imageUrl,
         imageAlt: imageAlt,
@@ -1289,79 +1198,122 @@ BCImagePicker.propTypes = {
   onRemove: propTypes.func.isRequired
 };
 
+var cleanSvgString = function cleanSvgString(svgString) {
+  if (svgString.startsWith('<?xml')) {
+    var endOfXml = svgString.indexOf('?>');
+    if (endOfXml !== -1) {
+      svgString = svgString.substring(endOfXml + 2);
+    }
+  }
+  svgString = svgString.trim();
+  return svgString;
+};
+
 var SvgImageComponent = function SvgImageComponent(_ref) {
-  var _ref$defaultImageId = _ref.defaultImageId,
-    defaultImageId = _ref$defaultImageId === void 0 ? null : _ref$defaultImageId,
-    _ref$defaultImageUrl = _ref.defaultImageUrl,
-    defaultImageUrl = _ref$defaultImageUrl === void 0 ? '' : _ref$defaultImageUrl,
-    _ref$defaultImageAlt = _ref.defaultImageAlt,
-    defaultImageAlt = _ref$defaultImageAlt === void 0 ? '' : _ref$defaultImageAlt,
-    onImageChange = _ref.onImageChange;
-  var defaultValues = {
-    defaultImageId: defaultImageId,
-    defaultImageUrl: defaultImageUrl,
-    defaultImageAlt: defaultImageAlt
+  var imageId = _ref.imageId,
+    imageUrl = _ref.imageUrl,
+    imageAlt = _ref.imageAlt,
+    svgCode = _ref.svgCode,
+    setAttributes = _ref.setAttributes;
+  var hasImage = imageId && imageUrl;
+  var isSvg = hasImage && svgCode;
+  var onRemoveImage = function onRemoveImage() {
+    return setAttributes({
+      imageId: null,
+      imageUrl: '',
+      imageAlt: '',
+      svgCode: ''
+    });
   };
-  var _useImageHandler = useImageHandler(defaultValues, onImageChange),
-    imageData = _useImageHandler.imageData,
-    onSelectImage = _useImageHandler.onSelectImage,
-    onRemoveImage = _useImageHandler.onRemoveImage;
-  var hasImage = imageData.imageId && imageData.imageUrl;
-  var isSvg = hasImage && imageData.svgCode;
-  return /*#__PURE__*/React__default.createElement(Fragment, null, /*#__PURE__*/React__default.createElement(blockEditor.InspectorControls, null, /*#__PURE__*/React__default.createElement(components.PanelBody, {
+  var onSelectImage = function onSelectImage(media) {
+    setAttributes({
+      imageId: media.id,
+      imageUrl: media.url,
+      imageAlt: media.alt
+    });
+    if (media.mime === 'image/svg+xml') {
+      fetch(media.url).then(function (response) {
+        return response.text();
+      }).then(function (svgString) {
+        var cleanedSvgString = cleanSvgString(svgString);
+        setAttributes({
+          svgCode: cleanedSvgString
+        });
+      });
+    } else {
+      setAttributes({
+        svgCode: ''
+      });
+    }
+  };
+  return /*#__PURE__*/React.createElement(Fragment, null, /*#__PURE__*/React.createElement(blockEditor.InspectorControls, null, /*#__PURE__*/React.createElement(components.PanelBody, {
     title: "Image Settings"
-  }, /*#__PURE__*/React__default.createElement(BCImagePicker, {
-    imageId: imageData.imageId,
-    imageUrl: imageData.imageUrl,
-    imageAlt: imageData.imageAlt,
+  }, /*#__PURE__*/React.createElement(BCImagePicker, {
+    imageId: imageId,
+    imageUrl: imageUrl,
+    imageAlt: imageAlt,
     onSelect: onSelectImage,
     onRemove: onRemoveImage
-  }))), /*#__PURE__*/React__default.createElement("div", blockEditor.useBlockProps(), /*#__PURE__*/React__default.createElement(blockEditor.MediaUploadCheck, null, /*#__PURE__*/React__default.createElement(blockEditor.MediaUpload, {
+  }))), /*#__PURE__*/React.createElement("div", blockEditor.useBlockProps(), /*#__PURE__*/React.createElement(blockEditor.MediaUploadCheck, null, /*#__PURE__*/React.createElement(blockEditor.MediaUpload, {
     onSelect: onSelectImage,
     allowedTypes: ['image'],
-    value: imageData.imageId,
+    value: imageId,
     render: function render(_ref2) {
       var open = _ref2.open;
-      return hasImage ? /*#__PURE__*/React__default.createElement("div", {
-        className: "bc-image-wrapper"
-      }, isSvg ? /*#__PURE__*/React__default.createElement("div", {
-        className: "svg-container",
-        dangerouslySetInnerHTML: {
-          __html: imageData.svgCode
-        }
-      }) : /*#__PURE__*/React__default.createElement("img", {
-        src: imageData.imageUrl,
-        alt: imageData.imageAlt || 'icon'
-      }), /*#__PURE__*/React__default.createElement("div", {
-        className: "bc-image-wrapper__actions"
-      }, /*#__PURE__*/React__default.createElement(components.Button, {
-        className: "bc-image-wrapper__btn bc-image-wrapper__replace-btn",
-        type: "button",
-        onClick: open
-      }, /*#__PURE__*/React__default.createElement(components.Icon, {
-        icon: icons.edit,
-        size: 20,
-        className: "bc-image-wrapper__btn-icon"
-      })), /*#__PURE__*/React__default.createElement(components.Button, {
-        className: "bc-image-wrapper__btn bc-image-wrapper__remove-btn",
-        type: "button",
-        onClick: onRemoveImage
-      }, /*#__PURE__*/React__default.createElement(components.Icon, {
-        icon: icons.trash,
-        size: 20,
-        className: "bc-image-wrapper__btn-icon"
-      }))), /*#__PURE__*/React__default.createElement("div", {
-        className: "bc-image-wrapper__overlay"
-      })) : /*#__PURE__*/React__default.createElement(blockEditor.MediaPlaceholder, {
+      return hasImage ? /*#__PURE__*/React.createElement(ImageDisplay, {
+        isSvg: isSvg,
+        svgCode: svgCode,
+        imageUrl: imageUrl,
+        imageAlt: imageAlt,
+        open: open,
+        onRemoveImage: onRemoveImage
+      }) : /*#__PURE__*/React.createElement(blockEditor.MediaPlaceholder, {
         icon: "format-image",
         onSelect: onSelectImage,
         allowedTypes: ['image', 'image/svg+xml'],
         labels: {
-          title: 'Select Icon Image'
+          title: 'Icon Image'
         }
       });
     }
   }))));
+};
+var ImageDisplay = function ImageDisplay(_ref3) {
+  var isSvg = _ref3.isSvg,
+    svgCode = _ref3.svgCode,
+    imageUrl = _ref3.imageUrl,
+    imageAlt = _ref3.imageAlt,
+    open = _ref3.open,
+    onRemoveImage = _ref3.onRemoveImage;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "bc-image-wrapper"
+  }, isSvg ? /*#__PURE__*/React.createElement("div", {
+    className: "svg-container",
+    dangerouslySetInnerHTML: {
+      __html: svgCode
+    }
+  }) : /*#__PURE__*/React.createElement("img", {
+    src: imageUrl,
+    alt: imageAlt || "icon"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "bc-image-wrapper__actions"
+  }, /*#__PURE__*/React.createElement(components.Button, {
+    className: "bc-image-wrapper__btn bc-image-wrapper__replace-btn",
+    onClick: open
+  }, /*#__PURE__*/React.createElement(components.Icon, {
+    icon: icons.edit,
+    size: 20,
+    className: "bc-image-wrapper__btn-icon"
+  })), /*#__PURE__*/React.createElement(components.Button, {
+    className: "bc-image-wrapper__btn bc-image-wrapper__remove-btn",
+    onClick: onRemoveImage
+  }, /*#__PURE__*/React.createElement(components.Icon, {
+    icon: icons.trash,
+    size: 20,
+    className: "bc-image-wrapper__btn-icon"
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "bc-image-wrapper__overlay"
+  }));
 };
 
 exports.SvgImageComponent = SvgImageComponent;
